@@ -6,5 +6,83 @@
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <p>Welcome to the Roster — submit your info below and see other entries.</p>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <h2>Submit your entry</h2>
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger" aria-live="polite"></div>
+
+            <div class="mb-3">
+                <label asp-for="Input.FirstName" class="form-label"></label>
+                <input asp-for="Input.FirstName" class="form-control" />
+                <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Input.LastName" class="form-label"></label>
+                <input asp-for="Input.LastName" class="form-control" />
+                <span asp-validation-for="Input.LastName" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Input.Major" class="form-label"></label>
+                <input asp-for="Input.Major" class="form-control" />
+                <span asp-validation-for="Input.Major" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Input.Shortcut" class="form-label"></label>
+                <input asp-for="Input.Shortcut" class="form-control" />
+                <span asp-validation-for="Input.Shortcut" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Input.WhereUsed" class="form-label"></label>
+                <input asp-for="Input.WhereUsed" class="form-control" />
+                <span asp-validation-for="Input.WhereUsed" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        @await Html.PartialAsync("_ValidationScriptsPartial")
+    </div>
+
+    <div class="col-md-6">
+        <h2>Roster</h2>
+        @if (Model.Entries == null || !Model.Entries.Any())
+        {
+            <p role="status" aria-live="polite">No entries yet — be the first!</p>
+        }
+        else
+        {
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Major</th>
+                        <th>Shortcut</th>
+                        <th>Where Used</th>
+                        <th>Submitted</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var e in Model.Entries)
+                    {
+                        <tr>
+                            <td>@(Html.Encode(e.FirstName)) @(Html.Encode(e.LastName))</td>
+                            <td>@(Html.Encode(e.Major))</td>
+                            <td>@(Html.Encode(e.Shortcut))</td>
+                            <td>@(Html.Encode(e.WhereUsed))</td>
+                            <td>@e.CreatedAt.ToLocalTime().ToString("g")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+
+        <p><a class="btn btn-link" href="/api/roster">View JSON feed</a></p>
+    </div>
 </div>
