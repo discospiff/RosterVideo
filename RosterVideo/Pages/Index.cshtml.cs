@@ -59,10 +59,12 @@ namespace RosterVideo.Pages
 
         public class InputModel
         {
+            [Display(Name = "First Name")]
             [Required]
             [StringLength(50)]
             public string? FirstName { get; set; }
 
+            [Display(Name = "Last Name")]
             [Required]
             [StringLength(50)]
             public string? LastName { get; set; }
