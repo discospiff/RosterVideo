@@ -8,7 +8,7 @@ namespace RosterVideo.Models
         public Guid Id { get; set; }
 
         [Display(Name = "First Name")]
-        [Required
+        [Required]
 
         [StringLength(50)]
         public string FirstName { get; set; } = string.Empty;
