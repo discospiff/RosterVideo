@@ -19,3 +19,11 @@ Notes
 
 Deployment
 - Publish to Azure App Service using Visual Studio publish profile or `dotnet publish` and follow Azure App Service deployment steps.
+
+CI/CD & Azure Deployment
+- The GitHub Actions workflow (.github/workflows/ci.yml) builds, tests, publishes, and deploys to Azure App Service on pushes to main/master.
+- To enable deployment, set the following repository secrets:
+  - AZURE_WEBAPP_NAME: the name of your Azure App Service
+  - AZURE_WEBAPP_PUBLISH_PROFILE: the publish profile XML content (obtain from the Azure Portal -> Get publish profile)
+
+After adding these secrets, pushes to main/master will deploy the published app automatically.

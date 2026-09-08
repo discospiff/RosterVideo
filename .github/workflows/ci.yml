@@ -5,6 +5,7 @@ on:
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -24,3 +25,31 @@ jobs:
 
       - name: Test
         run: dotnet test --no-build --verbosity normal
+
+      - name: Publish
+        run: dotnet publish RosterVideo/RosterVideo.csproj -c Release -o ./artifacts/roster
+
+      - name: Upload publish artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: roster
+          path: ./artifacts/roster
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download publish artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: roster
+          path: ./artifacts/roster
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ secrets.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: ./artifacts/roster
