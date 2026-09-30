@@ -27,3 +27,13 @@ CI/CD & Azure Deployment
   - AZURE_WEBAPP_PUBLISH_PROFILE: the publish profile XML content (obtain from the Azure Portal -> Get publish profile)
 
 After adding these secrets, pushes to main/master will deploy the published app automatically.
+
+Migrations (developer note)
+- This repository includes EF Core and a DbContext for MySQL In App. To create migrations locally you need the dotnet-ef tool installed in this repo or globally.
+- Example steps to add the initial migration locally:
+  1. dotnet new tool-manifest (if you don't have one already)
+ 2. dotnet tool install dotnet-ef --version 9.0.0
+ 3. dotnet tool restore
+ 4. dotnet tool run dotnet-ef migrations add InitialCreate --project RosterVideo --startup-project RosterVideo --output-dir Migrations
+
+If the environment where you're running cannot create migrations (for example, no local MySQL or networked provider), generate the migration on a developer machine with dotnet-ef and commit the generated files under RosterVideo/Migrations.
